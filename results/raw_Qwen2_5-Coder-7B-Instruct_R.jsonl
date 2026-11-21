@@ -1,0 +1,160 @@
+{"id": "TLB-000", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-002", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = TimeSeriesSplit(n_splits=5)\n```"}
+{"id": "TLB-003", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\n```"}
+{"id": "TLB-004", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-005", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = TimeSeriesSplit(n_splits=5)\n```"}
+{"id": "TLB-007", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata[cols] = data[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-009", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe[cols] = frame[cols].ffill().bfill()\n```"}
+{"id": "TLB-011", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nm = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)\ns = nse(y_val, m.predict(X_val))\nif s > score:\n    best, score = p, s\n```"}
+{"id": "TLB-012", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-013", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-014", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-016", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['Q_rm3'] = data['Q'].rolling(3, center=True).mean().fillna(method='bfill')\n```"}
+{"id": "TLB-017", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-018", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['y'] = df['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-021", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum()\n```"}
+{"id": "TLB-022", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['Q_ratio'] = df['Q'].shift(-H) / (df['Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-025", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = ts.loc[ts['date'] < cut_date, 'Q'].groupby('dek').mean()\nts['Q_clim'] = ts['dek'].map(clim)\n```"}
+{"id": "TLB-026", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['Q_ratio'] = ts['Q'].shift(-H) / (ts['Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-027", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    df['y'] = df['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-028", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    df['Q_ratio'] = df.loc[train, 'y'] / (df.loc[train, 'Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-031", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['y'] = df['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-032", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12, None]}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\nreturn score\n```"}
+{"id": "TLB-033", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['Q_ratio'] = df.loc[train, 'y'].shift(-H).div(df['Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-034", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ns = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-036", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    df[cols] = df[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-038", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1))\n```"}
+{"id": "TLB-040", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = data.loc[data['date'] < cut_date].groupby('dek')['Q'].mean()\ndata['Q_clim'] = data['dek'].map(clim)\n```"}
+{"id": "TLB-041", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['Q_rm3'] = frame['Q'].rolling(3, center=True).mean().fillna(method='bfill')\n```"}
+{"id": "TLB-042", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = StandardScaler().fit(X_tr)\n```"}
+{"id": "TLB-045", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['Q_rm3'] = df['Q'].rolling(3, center=True).mean().fillna(method='bfill')\n```"}
+{"id": "TLB-046", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-047", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = frame.loc[frame['date'] < cut_date, 'Q'].groupby('dek').mean()\nframe['Q_clim'] = frame['dek'].map(clim)\n```"}
+{"id": "TLB-049", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-051", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = data[data['date'] < cut_date].groupby('dek')['Q'].mean()\ndata['Q_clim'] = data['dek'].map(clim)\n```"}
+{"id": "TLB-052", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe[cols] = frame[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-054", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()\ndf['Q_clim'] = df['dek'].map(clim)\n```"}
+{"id": "TLB-055", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['y'] = ts['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-056", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata[cols] = data[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-057", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1))\n```"}
+{"id": "TLB-058", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\n```"}
+{"id": "TLB-060", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1))\n```"}
+{"id": "TLB-062", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['Q_l1'] = frame['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-063", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-064", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['Q_lag1'] = df['Q'].shift(H+1)\n```"}
+{"id": "TLB-065", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1))\n```"}
+{"id": "TLB-066", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(data.loc[train, 'Q'], period=36, robust=True).fit()\n```"}
+{"id": "TLB-067", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-068", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-069", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = data[data['date'] < cut_date].groupby('dek')['Q'].mean()\ndata['Q_clim'] = data['dek'].map(clim)\n```"}
+{"id": "TLB-073", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=None)\n```"}
+{"id": "TLB-074", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-075", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-077", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n        s = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-078", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-079", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-083", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['P_sum3'] = frame['P'].rolling(3).sum().shift(-H)[::-1][::-1]\n```"}
+{"id": "TLB-084", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(frame.loc[frame['date'] < cut_date, 'Q'], period=36, robust=True).fit()\n```"}
+{"id": "TLB-085", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = StandardScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-086", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-087", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = np.where(frame['date'] < cut_date)[0]\nX_tr, y_tr = X.iloc[idx], y.iloc[idx]\nX_te, y_te = X.iloc[~idx], y.iloc[~idx]\n```"}
+{"id": "TLB-088", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = StandardScaler().fit(X_tr)\n```"}
+{"id": "TLB-089", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-091", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ns = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-092", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ns = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-094", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-095", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = TimeSeriesSplit(n_splits=5)\n```"}
+{"id": "TLB-096", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data.loc[train, 'Q'].shift(-H)\n```"}
+{"id": "TLB-097", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12]}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\nreturn score\n```"}
+{"id": "TLB-100", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = data[data['date'] < cut_date].sample(frac=0.7, random_state=1).index\nX_tr, y_tr = X.loc[idx], y.loc[idx]\nX_te, y_te = X.drop(idx), y.drop(idx)\n```"}
+{"id": "TLB-101", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf[cols] = df[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-102", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-103", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-104", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(df.loc[df['date'] < cut_date, 'Q'], period=36, robust=True).fit()\n```"}
+{"id": "TLB-106", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = np.where(df['date'] < cut_date)[0]\nX_tr, y_tr = X.iloc[idx], y.iloc[idx]\nX_te, y_te = X.iloc[~idx], y.iloc[~idx]\n```"}
+{"id": "TLB-107", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['Q_l1'] = frame['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-108", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-109", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-111", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-112", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf[cols] = df[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-114", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-115", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = frame.loc[frame['date'] < cut_date, 'Q'].groupby('dek').mean()\nframe['Q_clim'] = frame['dek'].map(clim)\n```"}
+{"id": "TLB-116", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['y'] = frame['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-117", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=None)\n```"}
+{"id": "TLB-119", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-120", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['P_sum3'] = ts['P'].rolling(3).sum().shift(-H)[::-1][::-1]\n```"}
+{"id": "TLB-121", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data.loc[data['date'] < cut_date, 'Q'].shift(-H)\n```"}
+{"id": "TLB-122", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()\ndf['Q_clim'] = df['dek'].map(clim)\n```"}
+{"id": "TLB-123", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['Q_ratio'] = frame['Q'].shift(-H) / (frame['Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-124", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-125", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['y'] = ts['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-126", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['P_sum3'] = frame['P'].rolling(3).sum().shift(-H)[::-1][::-1]\n```"}
+{"id": "TLB-130", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(data.loc[data['date'] < cut_date, 'Q'], period=36, robust=True).fit()\ndata['Q_trend'] = res.trend\ndata['Q_seas'] = res.seasonal\n```"}
+{"id": "TLB-131", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['y'] = ts['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-132", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = np.where(df['date'] < cut_date)[0]\nX_tr, y_tr = X.iloc[idx], y.iloc[idx]\nX_te, y_te = X.iloc[~idx], y.iloc[~idx]\n```"}
+{"id": "TLB-135", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41)}\n```"}
+{"id": "TLB-137", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-140", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(data.loc[data['date'] < cut_date, 'Q'], period=36, robust=True).fit()\ndata['Q_trend'] = res.trend\ndata['Q_seas'] = res.seasonal\n```"}
+{"id": "TLB-141", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['Q_l1'] = data['Q'].shift(-1).fillna(method='bfill')\n```"}
+{"id": "TLB-142", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe['P_sum3'] = frame['P'].rolling(3).sum()\n```"}
+{"id": "TLB-143", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe[cols] = frame[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-144", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = np.where(frame['date'] < cut_date)[0]\nX_tr, y_tr = X.iloc[idx], y.iloc[idx]\nX_te, y_te = X.iloc[~idx], y.iloc[~idx]\n```"}
+{"id": "TLB-145", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\n```"}
+{"id": "TLB-147", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()\ndf['Q_clim'] = df['dek'].map(clim)\n```"}
+{"id": "TLB-148", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata[cols] = data[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-151", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}\nbest = min(scores, key=lambda k: -scores[k])\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-152", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = TimeSeriesSplit(n_splits=5)\n```"}
+{"id": "TLB-154", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41, 2)}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-157", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-158", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-159", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf[cols] = df[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-161", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata[cols] = data[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-162", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['Q_rm3'] = ts['Q'].rolling(3, min_periods=1).mean().shift(-3)\n```"}
+{"id": "TLB-163", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = StandardScaler().fit(X_tr)\n```"}
+{"id": "TLB-164", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()\ndf['Q_clim'] = df['dek'].map(clim)\n```"}
+{"id": "TLB-166", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['Q_l1'] = data.loc[data['date'] < cut_date, 'Q'].shift(-1)\n```"}
+{"id": "TLB-167", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))\n    cv = TimeSeriesSplit(n_splits=5)\n    scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')\n```"}
+{"id": "TLB-168", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nidx = np.where(frame['date'] < cut_date)[0]\nX_tr, y_tr = X.iloc[idx], y.iloc[idx]\nX_te, y_te = X.iloc[~idx], y.iloc[~idx]\n```"}
+{"id": "TLB-169", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = frame.loc[frame['date'] < cut_date].groupby('dek')['Q'].mean()\nframe['Q_clim'] = frame['dek'].map(clim)\n```"}
+{"id": "TLB-170", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-171", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-172", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)\n```"}
+{"id": "TLB-174", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\n```"}
+{"id": "TLB-175", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data.loc[data['date'] < cut_date, 'Q'].shift(-H)\n```"}
+{"id": "TLB-177", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    pipe.fit(X_tr, y_tr)\n    y_pred = pipe.predict(X_te)\n    score = nse(y_te, y_pred)\n    print(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-178", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts['Q_l1'] = ts['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-179", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12, None]}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-181", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-184", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = TimeSeriesSplit(n_splits=5)\n```"}
+{"id": "TLB-185", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ns = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-186", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data.loc[train, 'Q'].shift(-H)\n```"}
+{"id": "TLB-187", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['Q_ratio'] = data['Q'].shift(-H) / (data['Q_rm3'] + 1e-6)\n```"}
+{"id": "TLB-188", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndf['Q_l1'] = df['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-189", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-190", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-193", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nm = make_pipeline(StandardScaler(), Ridge(alpha=p)).fit(X_tr, y_tr)\ns = nse(y_te, m.predict(X_te))\nif s > score:\n    best, score = p, s\n```"}
+{"id": "TLB-196", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41, 2)}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\n```"}
+{"id": "TLB-198", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr_s, X_te_s = X_tr.values, X_te.values\n```"}
+{"id": "TLB-209", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    ts['Q_rm3'] = ts['Q'].rolling(3, min_periods=1).mean().fillna(method='bfill')\n```"}
+{"id": "TLB-210", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}\nbest = min(scores, key=lambda k: -scores[k])\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\nreturn score\n```"}
+{"id": "TLB-212", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-214", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-215", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n    df[cols] = df[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-217", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nsc = MinMaxScaler().fit(X_tr)\nX_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)\n```"}
+{"id": "TLB-218", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-219", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-220", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill')\n```"}
+{"id": "TLB-222", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata[cols] = data[cols].fillna(method='ffill')\n```"}
+{"id": "TLB-223", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nframe[cols] = frame[cols].fillna(method='bfill')\n```"}
+{"id": "TLB-226", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nm = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)\ns = nse(y_val, m.predict(X_val))\nif s > score:\n    best, score = p, s\n```"}
+{"id": "TLB-227", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')\n```"}
+{"id": "TLB-228", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = df[df['date'] < cut_date].groupby('dek')['Q'].mean()\ndf['Q_clim'] = df['dek'].map(clim)\n```"}
+{"id": "TLB-229", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nscores = {p: nse(y_val, make_pipeline(StandardScaler(), Ridge(alpha=p)).fit(X_train, y_train).predict(X_val)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}\nbest = max(scores, key=scores.get)\nscore = scores[best]\nprint(f'NSE = {score:.3f}')\nreturn score\n```"}
+{"id": "TLB-230", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-233", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ncv = KFold(n_splits=5, shuffle=False, random_state=0)\n```"}
+{"id": "TLB-234", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(df[df['date'] < cut_date]['Q'], period=36, robust=True).fit()\n```"}
+{"id": "TLB-235", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nres = STL(df.loc[train, 'Q'], period=36, robust=True).fit()\ndf['Q_trend'] = res.trend\ndf['Q_seas'] = res.seasonal\n```"}
+{"id": "TLB-236", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\nclim = data[data['date'] < cut_date].groupby('dek')['Q'].mean()\n```"}
+{"id": "TLB-237", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\ndata['y'] = data['Q'].shift(-(H+1))\n```"}
+{"id": "TLB-238", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n        s = nse(y_val, m.predict(X_val))\n```"}
+{"id": "TLB-239", "model": "Qwen2_5-Coder-7B-Instruct", "raw": "```python\n        m = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)\n        s = nse(y_val, m.predict(X_val))\n```"}

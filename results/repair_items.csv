@@ -1,0 +1,458 @@
+model,id,leak_type,fix,nse_twin,valid,runs,success,nse_fixed,err,pred_leak,loc_ok,end_to_end
+Qwen2_5-Coder-7B-Instruct,TLB-000,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7738736023819661,True,True,True,0.773873602381966,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-002,L6,cv = TimeSeriesSplit(n_splits=5),0.7469850305174133,True,True,True,0.7469850305174133,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-003,L1,sc = MinMaxScaler().fit(X_tr),0.7567613628044261,True,True,True,0.7567613628044261,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-004,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7691396670216272,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-005,L6,cv = TimeSeriesSplit(n_splits=5),0.7587402686258684,True,True,True,0.7587402686258684,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-007,L5,data[cols] = data[cols].fillna(method='bfill'),0.7673159864635111,True,True,False,0.7703104211118976,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-009,L5,frame[cols] = frame[cols].ffill().bfill(),0.7673159864635111,True,True,False,0.7673159864635111,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-011,L7,"m = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)
+s = nse(y_val, m.predict(X_val))
+if s > score:
+    best, score = p, s",0.7766533163297692,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-012,L5,ts[cols] = ts[cols].fillna(method='bfill'),0.7682282635460304,True,True,False,0.7819443528521328,still_leaky,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-013,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7703950181577411,True,True,True,0.7703950181577411,,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-014,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.767330102902841,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-016,L3,"data['Q_rm3'] = data['Q'].rolling(3, center=True).mean().fillna(method='bfill')",0.7576469304886053,True,True,False,0.9075754943008292,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-017,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=0)",0.727829596306712,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-018,L4,df['y'] = df['Q'].shift(-(H+1)),0.776253549810564,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-021,L3,ts['P_sum3'] = ts['P'].rolling(3).sum(),0.7738454393128873,True,True,True,0.7738454393128873,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-022,L4,df['Q_ratio'] = df['Q'].shift(-H) / (df['Q_rm3'] + 1e-6),0.7714208187263178,True,True,False,0.9396996541272239,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-025,L8,"clim = ts.loc[ts['date'] < cut_date, 'Q'].groupby('dek').mean()
+ts['Q_clim'] = ts['dek'].map(clim)",0.7683717005387156,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-026,L4,ts['Q_ratio'] = ts['Q'].shift(-H) / (ts['Q_rm3'] + 1e-6),0.7252247424977728,True,True,False,0.8849388465862004,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-027,L4,    df['y'] = df['Q'].shift(-(H+1)),0.7684904605092433,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-028,L4,"    df['Q_ratio'] = df.loc[train, 'y'] / (df.loc[train, 'Q_rm3'] + 1e-6)",0.7740128988486623,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-031,L4,df['y'] = df['Q'].shift(-(H+1)),0.7051942156494073,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-032,L7,"scores = {p: nse(y_te, make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12, None]}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')
+return score",0.7701534478857655,True,True,False,0.7712424952665489,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-033,L4,"df['Q_ratio'] = df.loc[train, 'y'].shift(-H).div(df['Q_rm3'] + 1e-6)",0.7876527177105624,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-034,L7,"s = nse(y_val, m.predict(X_val))",0.7522490200767594,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-036,L5,    df[cols] = df[cols].fillna(method='bfill'),0.7335044586354289,True,True,False,0.7347004312727314,still_leaky,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-038,L3,ts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1)),0.7333270956376734,True,False,False,,KeyError,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-040,L8,"clim = data.loc[data['date'] < cut_date].groupby('dek')['Q'].mean()
+data['Q_clim'] = data['dek'].map(clim)",0.7574515596832784,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-041,L3,"frame['Q_rm3'] = frame['Q'].rolling(3, center=True).mean().fillna(method='bfill')",0.7715463293783544,True,True,False,0.789890780350508,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-042,L1,sc = StandardScaler().fit(X_tr),0.7699972837323185,True,True,True,0.7699972837323185,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-045,L3,"df['Q_rm3'] = df['Q'].rolling(3, center=True).mean().fillna(method='bfill')",0.7464251621663187,True,True,False,0.9278606325839802,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-046,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7579565511171942,True,True,True,0.7579565511171942,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-047,L8,"clim = frame.loc[frame['date'] < cut_date, 'Q'].groupby('dek').mean()
+frame['Q_clim'] = frame['dek'].map(clim)",0.7688073792568193,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-049,L7,"scores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')",0.7576469304886053,True,True,False,0.7701646425223294,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-051,L8,"clim = data[data['date'] < cut_date].groupby('dek')['Q'].mean()
+data['Q_clim'] = data['dek'].map(clim)",0.7766282883407327,True,True,True,0.7766282883407326,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-052,L5,frame[cols] = frame[cols].fillna(method='ffill'),0.7876527177105624,True,True,True,0.7876527177105624,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-054,L8,"clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()
+df['Q_clim'] = df['dek'].map(clim)",0.759005092464508,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-055,L4,ts['y'] = ts['Q'].shift(-(H+1)),0.773873602381966,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-056,L5,data[cols] = data[cols].fillna(method='bfill'),0.7746627390497843,True,True,False,0.7849098594076354,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-057,L3,ts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1)),0.7712424952665489,True,False,False,,KeyError,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-058,L1,sc = MinMaxScaler().fit(X_tr),0.7705410845527889,True,True,True,0.7705410845527889,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-060,L3,ts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1)),0.7666748578578468,True,False,False,,KeyError,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-062,L3,frame['Q_l1'] = frame['Q'].shift(-(H+1)),0.7714208187263178,True,True,False,0.8676365792660009,still_leaky,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-063,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7704310158211577,True,True,True,0.7704310158211577,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-064,L4,df['Q_lag1'] = df['Q'].shift(H+1),0.7776161790505968,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-065,L3,ts['P_sum3'] = ts['P'].rolling(3).sum().shift(-(H+1)),0.7444177642816967,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-066,L8,"res = STL(data.loc[train, 'Q'], period=36, robust=True).fit()",0.7576469304886053,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-067,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7527072163528903,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-068,L5,ts[cols] = ts[cols].fillna(method='bfill'),0.76889008063462,True,True,False,0.7770558008035008,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-069,L8,"clim = data[data['date'] < cut_date].groupby('dek')['Q'].mean()
+data['Q_clim'] = data['dek'].map(clim)",0.7727254259505324,True,True,True,0.7727254259505324,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-073,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=None)",0.7331016849954137,True,True,False,0.7509893813340269,nse_inflated,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-074,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7714208187263178,True,True,True,0.7714208187263178,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-075,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7881585438493854,True,True,True,0.7881585438493854,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-077,L7,"        s = nse(y_val, m.predict(X_val))",0.7701490059559666,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-078,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.7788555181411612,True,True,True,-0.7908008394682053,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-079,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7705410845527889,True,True,True,0.7705410845527889,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-083,L3,frame['P_sum3'] = frame['P'].rolling(3).sum().shift(-H)[::-1][::-1],0.7738736023819661,True,True,False,0.800817487852817,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-084,L8,"res = STL(frame.loc[frame['date'] < cut_date, 'Q'], period=36, robust=True).fit()",0.7685754669890268,True,True,False,0.7953391395515608,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-085,L1,"sc = StandardScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7715463293783544,True,True,True,0.7715463293783544,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-086,L5,ts[cols] = ts[cols].fillna(method='ffill'),0.7684846073159016,True,True,True,0.7684846073159016,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-087,L2,"idx = np.where(frame['date'] < cut_date)[0]
+X_tr, y_tr = X.iloc[idx], y.iloc[idx]
+X_te, y_te = X.iloc[~idx], y.iloc[~idx]",0.7757167209234773,True,True,True,0.7753082687961118,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-088,L1,sc = StandardScaler().fit(X_tr),0.7687613981314373,True,True,True,0.7687613981314373,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-089,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7738454393128873,True,True,True,0.7738454393128873,,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-091,L7,"s = nse(y_val, m.predict(X_val))",0.7579565511171942,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-092,L7,"s = nse(y_val, m.predict(X_val))",0.7445298031735965,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-094,L1,"sc = MinMaxScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7526255382188483,True,True,True,0.7526255382188483,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-095,L6,cv = TimeSeriesSplit(n_splits=5),0.7701758825445209,True,True,True,0.7701758825445209,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-096,L4,"data['y'] = data.loc[train, 'Q'].shift(-H)",0.7576469304886053,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-097,L7,"scores = {p: nse(y_te, make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12]}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')
+return score",0.7701490059559666,True,True,False,0.7701490059559666,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-100,L2,"idx = data[data['date'] < cut_date].sample(frac=0.7, random_state=1).index
+X_tr, y_tr = X.loc[idx], y.loc[idx]
+X_te, y_te = X.drop(idx), y.drop(idx)",0.773873602381966,True,True,False,0.7983902549515998,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-101,L5,df[cols] = df[cols].fillna(method='ffill'),0.7560002383826591,True,True,True,0.7560002383826591,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-102,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7758607695419671,True,True,True,0.7758607695419671,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-103,L1,"sc = MinMaxScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7682228665650193,True,True,True,0.7682228665650193,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-104,L8,"res = STL(df.loc[df['date'] < cut_date, 'Q'], period=36, robust=True).fit()",0.7704310158211577,True,True,False,0.7960091084570228,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-106,L2,"idx = np.where(df['date'] < cut_date)[0]
+X_tr, y_tr = X.iloc[idx], y.iloc[idx]
+X_te, y_te = X.iloc[~idx], y.iloc[~idx]",0.7685460575054963,True,True,True,0.7684846073159016,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-107,L3,frame['Q_l1'] = frame['Q'].shift(-(H+1)),0.7766533163297692,True,True,False,0.8325000625759472,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-108,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.7827961503563187,True,True,True,-0.9733665126380445,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-109,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7254195865873625,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-111,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7673157163830313,True,True,True,0.7673157163830313,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-112,L5,df[cols] = df[cols].fillna(method='ffill').fillna(method='bfill'),0.771142514150381,True,True,False,0.771142514150381,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-114,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.7277623457994009,True,True,True,-1.49072296865918,,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-115,L8,"clim = frame.loc[frame['date'] < cut_date, 'Q'].groupby('dek').mean()
+frame['Q_clim'] = frame['dek'].map(clim)",0.7673159864635111,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-116,L4,frame['y'] = frame['Q'].shift(-(H+1)),0.7738454393128873,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-117,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=None)",0.7731008779474074,True,True,True,0.7808976040460969,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-119,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7490823928120665,True,True,True,0.7490823928120665,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-120,L3,ts['P_sum3'] = ts['P'].rolling(3).sum().shift(-H)[::-1][::-1],0.7741800012042567,True,True,False,0.7926418400576136,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-121,L4,"data['y'] = data.loc[data['date'] < cut_date, 'Q'].shift(-H)",0.7699087876788294,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-122,L8,"clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()
+df['Q_clim'] = df['dek'].map(clim)",0.7687613981314373,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-123,L4,frame['Q_ratio'] = frame['Q'].shift(-H) / (frame['Q_rm3'] + 1e-6),0.7741551072063396,True,True,False,0.9632441815256164,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-124,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7726286651654303,True,True,True,0.7726286651654303,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-125,L4,ts['y'] = ts['Q'].shift(-(H+1)),0.7567613628044261,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-126,L3,frame['P_sum3'] = frame['P'].rolling(3).sum().shift(-H)[::-1][::-1],0.7716103474755353,True,True,False,0.7940381243890209,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-130,L8,"res = STL(data.loc[data['date'] < cut_date, 'Q'], period=36, robust=True).fit()
+data['Q_trend'] = res.trend
+data['Q_seas'] = res.seasonal",0.7399593711765768,True,True,False,0.7703792256199844,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-131,L4,ts['y'] = ts['Q'].shift(-(H+1)),0.7766533163297692,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-132,L2,"idx = np.where(df['date'] < cut_date)[0]
+X_tr, y_tr = X.iloc[idx], y.iloc[idx]
+X_te, y_te = X.iloc[~idx], y.iloc[~idx]",0.7711088069370167,True,True,True,0.7705455920791794,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-135,L7,"scores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41)}",0.6887171664278163,True,True,False,0.7284844840096345,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-137,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.7809156706507774,True,True,True,-1.0809341191468829,,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-140,L8,"res = STL(data.loc[data['date'] < cut_date, 'Q'], period=36, robust=True).fit()
+data['Q_trend'] = res.trend
+data['Q_seas'] = res.seasonal",0.7335044586354289,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-141,L3,data['Q_l1'] = data['Q'].shift(-1).fillna(method='bfill'),0.7688100217022085,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-142,L3,frame['P_sum3'] = frame['P'].rolling(3).sum(),0.7738454393128872,True,True,True,0.7738454393128873,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-143,L5,frame[cols] = frame[cols].fillna(method='ffill').fillna(method='bfill'),0.7778393874757689,True,True,False,0.777839387475769,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-144,L2,"idx = np.where(frame['date'] < cut_date)[0]
+X_tr, y_tr = X.iloc[idx], y.iloc[idx]
+X_te, y_te = X.iloc[~idx], y.iloc[~idx]",0.7738454393128873,True,True,True,0.7742320011686656,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-145,L1,sc = MinMaxScaler().fit(X_tr),0.7567613628044261,True,True,True,0.7567613628044261,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-147,L8,"clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()
+df['Q_clim'] = df['dek'].map(clim)",0.7574515596832784,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-148,L5,data[cols] = data[cols].fillna(method='ffill'),0.7254403872192572,True,True,True,0.7254403872192572,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-151,L7,"scores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}
+best = min(scores, key=lambda k: -scores[k])
+score = scores[best]
+print(f'NSE = {score:.3f}')",0.759005092464508,True,True,False,0.7720903025848479,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-152,L6,cv = TimeSeriesSplit(n_splits=5),0.761916295827419,True,True,True,0.761916295827419,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-154,L7,"scores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41, 2)}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')",0.7730339232043485,True,True,False,0.7740756806638089,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-157,L5,ts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill'),0.7526255382188483,True,True,False,0.7526255382188483,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-158,L1,"sc = MinMaxScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7526255382188483,True,True,True,0.7526255382188483,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-159,L5,df[cols] = df[cols].fillna(method='ffill'),0.7462053613471271,True,True,True,0.7462053613471271,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-161,L5,data[cols] = data[cols].fillna(method='ffill').fillna(method='bfill'),0.7715438475363742,True,True,False,0.7715438475363742,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-162,L3,"ts['Q_rm3'] = ts['Q'].rolling(3, min_periods=1).mean().shift(-3)",0.7712424952665489,True,True,False,0.8984753157120575,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-163,L1,sc = StandardScaler().fit(X_tr),0.7525939415371912,True,True,True,0.7525939415371912,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-164,L8,"clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean()
+df['Q_clim'] = df['dek'].map(clim)",0.7668424466821946,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-166,L3,"data['Q_l1'] = data.loc[data['date'] < cut_date, 'Q'].shift(-1)",0.7769148659408043,True,False,False,,ValueError,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-167,L6,"    pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))
+    cv = TimeSeriesSplit(n_splits=5)
+    scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')",0.7785521108632045,True,True,True,0.7785521108632045,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-168,L2,"idx = np.where(frame['date'] < cut_date)[0]
+X_tr, y_tr = X.iloc[idx], y.iloc[idx]
+X_te, y_te = X.iloc[~idx], y.iloc[~idx]",0.7714407369940625,True,True,True,0.7708779599151865,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-169,L8,"clim = frame.loc[frame['date'] < cut_date].groupby('dek')['Q'].mean()
+frame['Q_clim'] = frame['dek'].map(clim)",0.7409337350434001,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-170,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7699291454243433,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-171,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7673157163830313,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-172,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, shuffle=False, test_size=0.3, random_state=42)",0.7685778320744172,True,True,True,0.7685778320744172,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-174,L1,sc = MinMaxScaler().fit(X_tr),0.7741551072063396,True,True,True,0.7741551072063396,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-175,L4,"data['y'] = data.loc[data['date'] < cut_date, 'Q'].shift(-H)",0.7576469304886053,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-177,L6,"    pipe.fit(X_tr, y_tr)
+    y_pred = pipe.predict(X_te)
+    score = nse(y_te, y_pred)
+    print(f'NSE = {score:.3f}')",0.780501312258307,True,False,False,,NameError,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-178,L3,ts['Q_l1'] = ts['Q'].shift(-(H+1)),0.7526255382188483,True,True,False,0.8445002512701505,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-179,L7,"scores = {p: nse(y_te, make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, max_depth=p, random_state=0, n_jobs=-1)).fit(X_tr, y_tr).predict(X_te)) for p in [3, 5, 8, 12, None]}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')",0.7691950114729892,True,True,False,0.7704660452315356,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-181,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=0)",0.783586952587811,True,False,False,,ValueError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-184,L6,cv = TimeSeriesSplit(n_splits=5),0.6877158100741495,True,True,True,0.6877158100741495,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-185,L7,"s = nse(y_val, m.predict(X_val))",0.7676475371488102,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-186,L4,"data['y'] = data.loc[train, 'Q'].shift(-H)",0.7699972837323185,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-187,L4,data['Q_ratio'] = data['Q'].shift(-H) / (data['Q_rm3'] + 1e-6),0.7682174689249585,True,True,False,0.9711723320774995,nse_inflated,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-188,L3,df['Q_l1'] = df['Q'].shift(-(H+1)),0.7536238231151333,True,True,False,0.8326116189678217,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-189,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=0)",0.7632459411806677,True,False,False,,ValueError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-190,L1,"sc = MinMaxScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7333270956376734,True,True,True,0.7333270956376734,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-193,L7,"m = make_pipeline(StandardScaler(), Ridge(alpha=p)).fit(X_tr, y_tr)
+s = nse(y_te, m.predict(X_te))
+if s > score:
+    best, score = p, s",0.7714208187263178,True,True,False,0.7716804550513882,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-196,L7,"scores = {p: nse(y_te, make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr).predict(X_te)) for p in range(3, 41, 2)}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')",0.7766533163297692,True,True,False,0.7795032833942416,still_leaky,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-198,L1,"X_tr_s, X_te_s = X_tr.values, X_te.values",0.7675829595499281,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-209,L3,"    ts['Q_rm3'] = ts['Q'].rolling(3, min_periods=1).mean().fillna(method='bfill')",0.7673159864635111,True,True,True,0.7673159864635111,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-210,L7,"scores = {p: nse(y_te, make_pipeline(MinMaxScaler(), Ridge(alpha=p)).fit(X_tr, y_tr).predict(X_te)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}
+best = min(scores, key=lambda k: -scores[k])
+score = scores[best]
+print(f'NSE = {score:.3f}')
+return score",0.7595528085305054,True,True,False,0.7726528387472031,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-212,L4,data['y'] = data['Q'].shift(-(H+1)),0.7444177642816967,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-214,L5,ts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill'),0.7676475371488102,True,True,False,0.7676475371488102,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-215,L5,    df[cols] = df[cols].fillna(method='ffill').fillna(method='bfill'),0.7760851307306933,True,True,False,0.7760851307306933,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-217,L1,"sc = MinMaxScaler().fit(X_tr)
+X_tr_s, X_te_s = sc.transform(X_tr), sc.transform(X_te)",0.7567613628044261,True,True,True,0.7567613628044261,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-218,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=0)",0.7791290066581673,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-219,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.7587402686258684,True,True,True,-1.188015566700684,,0,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-220,L5,ts[cols] = ts[cols].fillna(method='ffill').fillna(method='bfill'),0.7682088881437482,True,True,False,0.7682088881437482,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-222,L5,data[cols] = data[cols].fillna(method='ffill'),0.7701534478857655,True,True,True,0.7701534478857655,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-223,L5,frame[cols] = frame[cols].fillna(method='bfill'),0.7757924177599924,True,True,False,0.7730455440144287,still_leaky,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-226,L7,"m = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)
+s = nse(y_val, m.predict(X_val))
+if s > score:
+    best, score = p, s",0.7763871449935045,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-227,L6,"scores = cross_val_score(pipe, X_tr, y_tr, cv=(X_tr.shape[0]//5), scoring='r2')",0.782866789616339,True,True,True,-0.9734894682783799,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-228,L8,"clim = df[df['date'] < cut_date].groupby('dek')['Q'].mean()
+df['Q_clim'] = df['dek'].map(clim)",0.7763871449935045,True,True,True,0.7763871449935045,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-229,L7,"scores = {p: nse(y_val, make_pipeline(StandardScaler(), Ridge(alpha=p)).fit(X_train, y_train).predict(X_val)) for p in [0.01, 0.1, 1.0, 10.0, 100.0]}
+best = max(scores, key=scores.get)
+score = scores[best]
+print(f'NSE = {score:.3f}')
+return score",0.7687613981314373,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-230,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7266451742605836,True,True,True,0.7266451742605836,,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-233,L6,"cv = KFold(n_splits=5, shuffle=False, random_state=0)",0.7373344524709581,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-234,L8,"res = STL(df[df['date'] < cut_date]['Q'], period=36, robust=True).fit()",0.718933157613368,True,True,False,0.722336354745328,still_leaky,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-235,L8,"res = STL(df.loc[train, 'Q'], period=36, robust=True).fit()
+df['Q_trend'] = res.trend
+df['Q_seas'] = res.seasonal",0.7700892546797187,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-236,L8,clim = data[data['date'] < cut_date].groupby('dek')['Q'].mean(),0.7528978057125939,True,True,True,0.7528978057125939,,1,1.0,True
+Qwen2_5-Coder-7B-Instruct,TLB-237,L4,data['y'] = data['Q'].shift(-(H+1)),0.7524677756209448,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-238,L7,"        s = nse(y_val, m.predict(X_val))",0.7555246178320921,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-7B-Instruct,TLB-239,L7,"        m = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)
+        s = nse(y_val, m.predict(X_val))",0.7688100217022085,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-000,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=42)",0.7738736023819661,True,True,True,0.773873602381966,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-002,L6,"pipe = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7469850305174133,True,True,False,0.7806157249566866,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-003,L1,sc = MinMaxScaler().fit(X_tr),0.7567613628044261,True,True,True,0.7567613628044261,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-004,L1,"X = pd.DataFrame(StandardScaler().fit_transform(X), columns=X.columns, index=X.index)",0.7691396670216272,True,True,False,0.770098327040478,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-005,L6,"pipe = make_pipeline(MinMaxScaler(), Ridge(alpha=1.0))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7587402686258684,True,True,False,0.7549197976044445,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-007,L5,pass,0.7673159864635111,True,True,True,0.7673159864635111,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-009,L5,pass,0.7673159864635111,True,True,True,0.7437338615196623,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-011,L7,pass,0.7766533163297692,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-012,L5,pass,0.7682282635460304,True,True,True,0.7682282635460304,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-013,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7703950181577411,True,True,True,0.7703950181577411,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-014,L1,"X = pd.DataFrame(StandardScaler().fit_transform(X), columns=X.columns, index=X.index)",0.767330102902841,True,True,False,0.767330102902841,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-016,L3,data['Q_seas'] = data['dek'].map(clim) - clim.mean(),0.7576469304886053,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-017,L6,"pipe = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.727829596306712,True,False,False,,ValueError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-018,L4,pass,0.776253549810564,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-021,L3,pass,0.7738454393128873,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-022,L4,pass,0.7714208187263178,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-025,L8,pass,0.7683717005387156,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-026,L4,pass,0.7252247424977728,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-027,L4,pass,0.7684904605092433,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-028,L4,pass,0.7740128988486623,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-031,L4,pass,0.7051942156494073,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-032,L7,pass,0.7701534478857655,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-033,L4,pass,0.7876527177105624,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-034,L7,"m = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, max_depth=best, random_state=0, n_jobs=-1)).fit(X_tr, y_tr)",0.7522490200767594,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-036,L5,pass,0.7335044586354289,True,True,True,0.7335044586354289,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-038,L3,pass,0.7333270956376734,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-040,L8,clim = data.loc[data['date'] < cut_date].groupby('dek')['Q'].mean(),0.7574515596832784,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-041,L3,pass,0.7715463293783544,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-042,L1,pass,0.7699972837323185,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-045,L3,pass,0.7464251621663187,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-046,L2,pass,0.7579565511171942,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-047,L8,clim = frame[:int(len(frame) * 0.7)]['Q'].mean(),0.7688073792568193,True,False,False,,TypeError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-049,L7,pass,0.7576469304886053,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-051,L8,clim = data.groupby('dek')['Q'].mean().loc[data['date'] < cut_date],0.7766282883407327,True,True,False,0.7781328461903148,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-052,L5,pass,0.7876527177105624,True,True,True,0.7641528410498062,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-054,L8,clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean(),0.759005092464508,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-055,L4,pass,0.773873602381966,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-056,L5,pass,0.7746627390497843,True,True,True,0.7746627390497843,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-057,L3,pass,0.7712424952665489,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-058,L1,pass,0.7705410845527889,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-060,L3,pass,0.7666748578578468,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-062,L3,pass,0.7714208187263178,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-063,L2,pass,0.7704310158211577,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-064,L4,pass,0.7776161790505968,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-065,L3,pass,0.7444177642816967,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-066,L8,pass,0.7576469304886053,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-067,L1,"X = pd.DataFrame(StandardScaler().fit_transform(X), columns=X.columns, index=X.index)",0.7527072163528903,True,True,False,0.7526211462174376,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-068,L5,pass,0.76889008063462,True,True,True,0.76889008063462,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-069,L8,clim = data.groupby('dek')['Q'].mean().loc[data['date'] <= cut_date],0.7727254259505324,True,True,False,0.7729601778427415,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-073,L6,"pipe = make_pipeline(MinMaxScaler(), Ridge(alpha=1.0))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7331016849954137,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-074,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=0)",0.7714208187263178,True,True,True,0.7714208187263178,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-075,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=42)",0.7881585438493854,True,True,True,0.7881585438493854,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-077,L7,pass,0.7701490059559666,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-078,L6,"pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))",0.7788555181411612,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-079,L2,pass,0.7705410845527889,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-083,L3,pass,0.7738736023819661,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-084,L8,"res = STL(frame['Q'], period=36, robust=True, seasonal=12).fit()",0.7685754669890268,True,False,False,,ValueError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-085,L1,pass,0.7715463293783544,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-086,L5,pass,0.7684846073159016,True,True,True,0.7526816847325651,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-087,L2,"idx = frame.sample(frac=0.7, random_state=1).index
+X_tr, y_tr = X.loc[idx], y.loc[idx]
+X_te, y_te = X.drop(idx), y.drop(idx)",0.7757167209234773,True,True,False,0.801803108184237,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-088,L1,sc = StandardScaler().fit(X_tr),0.7687613981314373,True,True,True,0.7687613981314373,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-089,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=42)",0.7738454393128873,True,True,True,0.7738454393128872,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-091,L7,"m = make_pipeline(MinMaxScaler(), Ridge(alpha=best)).fit(X_tr, y_tr)",0.7579565511171942,True,False,False,,InvalidParameterError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-092,L7,"m = make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, max_depth=best, random_state=0, n_jobs=-1)).fit(X_tr, y_tr)",0.7445298031735965,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-094,L1,sc = MinMaxScaler().fit(X_tr),0.7526255382188483,True,True,True,0.7526255382188483,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-095,L6,"pipe = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7701758825445209,True,True,False,0.781602922251148,still_leaky,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-096,L4,pass,0.7576469304886053,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-097,L7,pass,0.7701490059559666,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-100,L2,pass,0.773873602381966,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-101,L5,pass,0.7560002383826591,True,True,True,0.7291822176396001,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-102,L2,pass,0.7758607695419671,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-103,L1,pass,0.7682228665650193,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-104,L8,pass,0.7704310158211577,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-106,L2,pass,0.7685460575054963,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-107,L3,pass,0.7766533163297692,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-108,L6,"pipe = make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))",0.7827961503563187,True,False,False,,NameError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-109,L1,"X = pd.DataFrame(MinMaxScaler().fit_transform(X[train]), columns=X.columns, index=X.index)",0.7254195865873625,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-111,L2,pass,0.7673157163830313,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-112,L5,pass,0.771142514150381,True,True,True,0.7431254398473177,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-114,L6,"pipe = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=10))",0.7277623457994009,True,False,False,,NameError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-115,L8,"clim = frame.loc[frame['date'] <= cut_date, 'Q'].mean()",0.7673159864635111,True,False,False,,TypeError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-116,L4,pass,0.7738454393128873,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-117,L6,"pipe = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7731008779474074,True,False,False,,ValueError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-119,L2,pass,0.7490823928120665,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-120,L3,pass,0.7741800012042567,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-121,L4,pass,0.7699087876788294,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-122,L8,clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean(),0.7687613981314373,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-123,L4,pass,0.7741551072063396,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-124,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=42)",0.7726286651654303,True,True,True,0.7726286651654303,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-125,L4,pass,0.7567613628044261,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-126,L3,pass,0.7716103474755353,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-130,L8,pass,0.7399593711765768,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-131,L4,pass,0.7766533163297692,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-132,L2,pass,0.7711088069370167,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-135,L7,pass,0.6887171664278163,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-137,L6,"pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))",0.7809156706507774,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-140,L8,pass,0.7335044586354289,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-141,L3,pass,0.7688100217022085,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-142,L3,pass,0.7738454393128872,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-143,L5,pass,0.7778393874757689,True,True,True,0.7718873673535195,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-144,L2,"idx = frame.sample(frac=0.7, random_state=1).index
+X_tr, y_tr = X.loc[idx], y.loc[idx]
+X_te, y_te = X.drop(idx), y.drop(idx)",0.7738454393128873,True,True,False,0.8105486770943986,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-145,L1,pass,0.7567613628044261,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-147,L8,clim = df.loc[df['date'] < cut_date].groupby('dek')['Q'].mean(),0.7574515596832784,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-148,L5,pass,0.7254403872192572,True,True,True,0.7217305805286808,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-151,L7,pass,0.759005092464508,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-152,L6,"pipe = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.761916295827419,True,True,False,0.7835673279322235,still_leaky,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-154,L7,pass,0.7730339232043485,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-157,L5,pass,0.7526255382188483,True,True,True,0.7385379607291596,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-158,L1,pass,0.7526255382188483,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-159,L5,pass,0.7462053613471271,True,True,True,0.7234150142865502,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-161,L5,pass,0.7715438475363742,True,True,True,0.7434759041100578,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-162,L3,pass,0.7712424952665489,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-163,L1,pass,0.7525939415371912,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-164,L8,pass,0.7668424466821946,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-166,L3,pass,0.7769148659408043,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-167,L6,"pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))",0.7785521108632045,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-168,L2,"idx = frame.sample(frac=0.7, random_state=1).index",0.7714407369940625,True,True,False,0.8164215078553845,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-169,L8,clim = frame.loc[frame['date'] < cut_date].groupby('dek')['Q'].mean(),0.7409337350434001,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-170,L1,"X = pd.DataFrame(StandardScaler().fit_transform(X[train]), columns=X.columns, index=X.index)",0.7699291454243433,True,False,False,,UnboundLocalError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-171,L1,"X = pd.DataFrame(MinMaxScaler().fit_transform(X), columns=X.columns, index=X.index)",0.7673157163830313,True,True,False,0.7673157163830313,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-172,L2,"X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, shuffle=False, random_state=42)",0.7685778320744172,True,True,True,0.7685778320744172,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-174,L1,pass,0.7741551072063396,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-175,L4,pass,0.7576469304886053,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-177,L6,"pipe = make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.780501312258307,True,True,False,0.7809636085144473,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-178,L3,pass,0.7526255382188483,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-179,L7,pass,0.7691950114729892,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-181,L6,"pipe = make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.783586952587811,True,False,False,,ValueError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-184,L6,"pipe = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=10))
+cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.6877158100741495,True,True,False,0.7093638681666361,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-185,L7,pass,0.7676475371488102,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-186,L4,pass,0.7699972837323185,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-187,L4,pass,0.7682174689249585,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-188,L3,pass,0.7536238231151333,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-189,L6,"pipe = make_pipeline(MinMaxScaler(), KNeighborsRegressor(n_neighbors=10))",0.7632459411806677,True,False,False,,NameError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-190,L1,sc = MinMaxScaler().fit(X_tr),0.7333270956376734,True,True,True,0.7333270956376734,,1,1.0,True
+Qwen2_5-Coder-3B-Instruct,TLB-193,L7,"m = make_pipeline(StandardScaler(), Ridge(alpha=p)).fit(X_tr, y_tr)",0.7714208187263178,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-196,L7,pass,0.7766533163297692,True,False,False,,NameError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-198,L1,"X = pd.DataFrame(MinMaxScaler().fit_transform(X), columns=X.columns, index=X.index)",0.7675829595499281,True,True,False,0.7675825915613733,still_leaky,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-209,L3,pass,0.7673159864635111,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-210,L7,pass,0.7595528085305054,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-212,L4,pass,0.7444177642816967,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-214,L5,pass,0.7676475371488102,True,True,True,0.7497074523301526,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-215,L5,pass,0.7760851307306933,True,True,True,0.7582625280443778,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-217,L1,pass,0.7567613628044261,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-218,L6,"pipe = make_pipeline(MinMaxScaler(), Ridge(alpha=1.0))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7791290066581673,True,False,False,,ValueError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-219,L6,"pipe = make_pipeline(MinMaxScaler(), Ridge(alpha=1.0))",0.7587402686258684,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-220,L5,pass,0.7682088881437482,True,True,True,0.723644296241386,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-222,L5,pass,0.7701534478857655,True,True,True,0.7707470956625759,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-223,L5,pass,0.7757924177599924,True,True,True,0.7757924177599924,,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-226,L7,"m = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=p)).fit(X_tr, y_tr)",0.7763871449935045,True,False,False,,NameError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-227,L6,"pipe = make_pipeline(MinMaxScaler(), RandomForestRegressor(n_estimators=100, random_state=0, n_jobs=-1))
+scores = cross_val_score(pipe, X_tr, y_tr, cv=5, scoring='r2', shuffle=False)
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.782866789616339,True,False,False,,TypeError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-228,L8,clim = df[df['date'] <= cut_date]['dek'].groupby('dek')['Q'].mean(),0.7763871449935045,True,False,False,,KeyError,1,1.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-229,L7,pass,0.7687613981314373,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-230,L2,pass,0.7266451742605836,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-233,L6,"pipe = make_pipeline(MinMaxScaler(), Ridge(alpha=1.0))
+cv = KFold(n_splits=5, shuffle=False, random_state=0)
+scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring='r2')
+score = scores.mean()
+print(f'NSE = {score:.3f}')",0.7373344524709581,True,False,False,,ValueError,0,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-234,L8,pass,0.718933157613368,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-235,L8,"res = STL(df.loc[train, 'Q'], period=36, robust=True).fit()",0.7700892546797187,True,False,False,,NameError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-236,L8,clim = data.groupby('dek')['Q'].mean().loc[data['date'] < cut_date],0.7528978057125939,True,True,False,0.7696748190131294,still_leaky,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-237,L4,pass,0.7524677756209448,True,False,False,,KeyError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-238,L7,"m = make_pipeline(MinMaxScaler(), Ridge(alpha=best)).fit(X_tr, y_tr)",0.7555246178320921,True,False,False,,InvalidParameterError,1,0.0,False
+Qwen2_5-Coder-3B-Instruct,TLB-239,L7,pass,0.7688100217022085,True,False,False,,NameError,1,0.0,False

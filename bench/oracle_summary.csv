@@ -1,0 +1,9 @@
+leak_type,n,confirmed_pct,delta_mean,delta_median,delta_min,delta_max,nse_twin_mean,description
+L1,20,0.0,-0.0005,0.0,-0.0036,0.001,0.7602,Preprocessing: scaler fitted on data that includes the test period
+L2,20,90.0,0.0325,0.0367,0.0034,0.0544,0.7686,Split: random/shuffled train-test split of a time series
+L3,20,75.0,0.0959,0.026,-0.0028,0.2473,0.7649,"Look-ahead feature: feature uses future values (negative shift, centred/forward window)"
+L4,20,100.0,0.1572,0.1679,0.0751,0.2287,0.7631,Target leakage: feature derived from the target at the same step
+L5,20,30.0,0.0064,0.0048,-0.0103,0.0315,0.7647,Imputation: gap filling uses future observations
+L6,20,80.0,0.015,0.0129,-0.005,0.0404,0.7597,Cross-validation: shuffled/non-temporal CV used to report performance
+L7,20,30.0,0.0066,0.0047,0.0,0.0316,0.7617,Model selection: hyper-parameters chosen on the test set
+L8,20,40.0,0.0107,0.0011,-0.0028,0.0387,0.7596,Decomposition/climatology computed on the full series incl. test period
